@@ -1,29 +1,18 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Aiink from '/AIINKLOGO.png'
 import './App.css'
 import Prompt from './components/Prompt'
 import Display from './components/Display'
+import ImageSplitter from './components/ImageSplitter'
 
 function App() {
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+          <img src={Aiink} className="logo" alt="Vite logo" />
       </div>
-      <h1>Vite + React</h1>
-      
-
     <Prompt />
-
-
-
     </>
   )
 }

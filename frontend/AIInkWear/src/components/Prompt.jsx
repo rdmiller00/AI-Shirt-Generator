@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import ImageSplitter from "./ImageSplitter";
 
 
 const Prompt = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState("");
+  
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -41,10 +42,12 @@ const Prompt = () => {
       });
   };
   return (
+      <div>
+     <ImageSplitter />
     <div>
       <input
         className="promptInput"
-        placeholder="Enter prompt here! Have fun!"
+        placeholder="T-Shirt......Transparent background"
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
@@ -52,6 +55,7 @@ const Prompt = () => {
         Generate Image
       </button>
       <div>{generatedImage}</div>
+    </div>
     </div>
   );
 };
