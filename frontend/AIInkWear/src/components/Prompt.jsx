@@ -42,7 +42,7 @@ const Prompt = () => {
       setGeneratedImage(picture.data.uri);
     }
   };
-  
+
   return (
     <div>
       <input
@@ -54,6 +54,7 @@ const Prompt = () => {
       <button className="generateButton" onClick={handleGenerateImage}>
         Generate Image
       </button>
+      <br />
       {generatedImage && <img src={generatedImage} alt="Generated Image" className="newImage" />}
     </div>
   );
