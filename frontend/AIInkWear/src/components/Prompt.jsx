@@ -23,23 +23,26 @@ const Prompt = () => {
     axios(config)
       .then(async function (response) {
         console.log(response.data);
-        setGeneratedImage(JSON.stringify(response.data));
-        let finished = false;
-        while(!finished){
-          let picture = await axios.get(`http://localhost:3000/message/` + response.data.messageId)
-          console.log(picture.data);
-          picture.data.uri ? finished = true : false
-          console.log("Loading image...")
-          if(!finished){
-          await sleep(30000)
-          }
-        }
-        console.log(picture.data.uri);
+        setGeneratedImage(response.data.uri);
+        checkProgressAndFetchImage(response.data.messageId);
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+        const checkProgressAndFetchImage = async (messageId) => {
+    const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
+    if (picture.data.progress !== 100) {
+      console.log("Loading image...");
+      await sleep(10000);
+      checkProgressAndFetchImage(messageId); // Recursive call
+    } else {
+      console.log("Image loaded:", picture.data.uri);
+      setGeneratedImage(picture.data.uri);
+    }
+  };
+  
   return (
     <div>
       <input
@@ -51,7 +54,7 @@ const Prompt = () => {
       <button className="generateButton" onClick={handleGenerateImage}>
         Generate Image
       </button>
-      <div>{generatedImage}</div>
+      {generatedImage && <img src={generatedImage} alt="Generated Image" className="newImage" />}
     </div>
   );
 };
