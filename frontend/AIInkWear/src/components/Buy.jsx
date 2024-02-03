@@ -24,6 +24,7 @@ button.addEventListener('click', (e) => {
       colours: "White,Black,Blue",
       description: "Check out this awesome AiiNKWEAR Image, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the AIINKWEAR API and printed on demand.",
       price: 18,
+
     }),
   };
   // Open a new tab, ready to receive the product URL. 
@@ -36,4 +37,20 @@ button.addEventListener('click', (e) => {
     .then(response => response.json())
     .then(response => newTab.location.href = response.url)
     .catch(err => console.error(err));
+
+
+    return (
+      <div className="Buy">
+      <img src={blackShirt} className="logo" alt="Black Shirt" />
+      <img src={greyShirt} className="logo" alt="Grey Shirt" />
+      <img src={whiteShirt} className="logo" alt="White Shirt" />
+      </div>
+    );
+
 });
+
+
+
+
+
+export default Buy;
