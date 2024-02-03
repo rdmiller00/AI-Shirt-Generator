@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Prompt = () => {
+const Prompt = ({selectedImage, setSelectedImage}) => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState("");
   const [splitImages, setSplitImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState("");
 
   function sleep(ms) {
@@ -27,6 +27,7 @@ const Prompt = () => {
         setSplitImages([]); // Clear previous split images
         setSelectedImage(null); // Reset selected image
         checkProgressAndFetchImage(response.data.messageId);
+
       })
       .catch(function (error) {
         console.log(error);
@@ -39,22 +40,26 @@ const Prompt = () => {
     if (picture.data.progress !== 100) {
       console.log("Loading image...");
       setLoadingMessage(`Like human art, generative AI art takes time too. Your design is about ${picture.data.progress || 0}% done`);
+      // if (picture.data.uri !== "undefined") {
+      // setGeneratedImage(picture.data.uri)  progress pics
+      // }
       await sleep(5000);
       checkProgressAndFetchImage(messageId);
     } else {
       console.log("Image loaded:", picture.data.uri);
       setGeneratedImage(picture.data.uri);
-      splitImage(picture.data.uri);
+      await splitImage(picture.data.uri);
       setLoadingMessage("");
+      handleImageSelect(0);
     }
   };
 
-  const splitImage = (fetchedImageUri) => {
+  const splitImage = async (fetchedImageUri) => {
     const image = new Image();
     image.crossOrigin = "Anonymous";
     image.src = fetchedImageUri;
 
-    image.onload = () => {
+    image.onload = async () => {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
 
@@ -73,13 +78,16 @@ const Prompt = () => {
           console.log(startX, startY, partWidth, partHeight);
 
           const dataUrl = canvas.toDataURL("image/jpeg");
-          setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
+          await setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
+          
         }
       }
     };
+    handleImageSelect(0);
   };
 
   const handleImageSelect = (index) => {
+    console.log(index);
     setSelectedImage(splitImages[index]);
     console.log([...splitImages]);
     console.log("Selected Image:", selectedImage);
@@ -109,10 +117,7 @@ const Prompt = () => {
           className={`newImage ${selectedImage === image.filename ? "selected" : ""}`}
           onClick={() => handleImageSelect(index)}
         />
-      ))}
-      
-      {selectedImage && <img src={selectedImage.dataUrl} alt="Selected Image" />}
-      
+      ))}   
     </div>
   );
 };

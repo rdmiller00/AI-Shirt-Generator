@@ -3,9 +3,10 @@ import blackShirt from '../images/blackShirt.png';
 import greyShirt from '../images/greyShirt.png';
 import whiteShirt from '../images/whiteShirt.png';
 
-
-class BuyButton extends React.Component {
-  handleClick = () => {
+const BuyButton = ({selectedImage, setSelectedImage}) => {
+  
+  
+  const handleClick = ()  => {
     // Export the base64 image from the canvas
     const base64_image = 'https://cdn.discordapp.com/attachments/1201197890870202378/1201291248095473664/tweekownz_T-Shirt_Design_with_fresh_prince_of_Notre_Dame_with_T_2cdddf92-7efb-4877-b4aa-a50026220575.png?ex=65c948a8&is=65b6d3a8&hm=17fcaaf4cf0ef8159db1a71ac19a226f6dd1db8c05d89205a9882d87ac17688d&';
     
@@ -36,18 +37,21 @@ class BuyButton extends React.Component {
       .catch(err => console.error(err));
   };
 
-  render() {
+  
     return (
       <div className="Buy">
       <img src={blackShirt} className="Shirt" alt="Black Shirt" />
       <img src={greyShirt} className="Shirt" alt="Grey Shirt" />
       <img src={whiteShirt} className="Shirt" alt="White Shirt" />
-      <button id="buy_button" onClick={this.handleClick}>
+      <button id="buy_button" onClick={handleClick}>
         Buy Now!
       </button>
+      {selectedImage && <img src={selectedImage.dataUrl} alt="Selected Image" />}
+
       </div>
     );
-  }
 }
+
+
 
 export default BuyButton;
