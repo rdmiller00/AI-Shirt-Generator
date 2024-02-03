@@ -34,6 +34,7 @@ const Prompt = () => {
   };
 
   const checkProgressAndFetchImage = async (messageId) => {
+    // messageId = '9853995d-0e0f-4e56-89d0-208fb110f9b0'
     const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
     if (picture.data.progress !== 100) {
       console.log("Loading image...");
@@ -72,7 +73,7 @@ const Prompt = () => {
           console.log(startX, startY, partWidth, partHeight);
 
           const dataUrl = canvas.toDataURL("image/jpeg");
-          setSplitImages((prevSplitImages) => [...prevSplitImages, dataUrl]);
+          setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
         }
       }
     };
@@ -80,6 +81,8 @@ const Prompt = () => {
 
   const handleImageSelect = (index) => {
     setSelectedImage(splitImages[index]);
+    console.log([...splitImages]);
+    console.log("Selected Image:", selectedImage);
   };
 
   return (
@@ -90,22 +93,26 @@ const Prompt = () => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
-      <button className="generateButton" onClick={handleGenerateImage}>
-        Generate Image
-      </button>
+
+      {/* <button className="generateButton" onClick={checkProgressAndFetchImage}>Generate Image</button> */}
+      <button className="generateButton" onClick={handleGenerateImage}>Generate Image</button>
+        
+  
       <br />
       <h2>{loadingMessage}</h2>
       <br />
       {splitImages.map((image, index) => (
         <img
           key={index}
-          src={image}
+          src={image.dataUrl}
           alt={`Generated Image ${index + 1}`}
-          className={`newImage ${selectedImage === image ? "selected" : ""}`}
+          className={`newImage ${selectedImage === image.filename ? "selected" : ""}`}
           onClick={() => handleImageSelect(index)}
         />
       ))}
-      {selectedImage && <div>Selected Image: {selectedImage}</div>}
+      
+      {selectedImage && <img src={selectedImage.dataUrl} alt="Selected Image" />}
+      
     </div>
   );
 };
