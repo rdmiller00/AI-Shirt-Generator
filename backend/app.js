@@ -20,7 +20,7 @@ app.post('/', (req, res) => {
             Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OTEwMCwiZW1haWwiOiJ0d2Vla293bnpAZ21haWwuY29tIiwidXNlcm5hbWUiOiJ0d2Vla293bnpAZ21haWwuY29tIiwiaWF0IjoxNzA2Mzg5MDM4fQ.WuNCN5qsC6GW8rzeilEHEC0rqrYuAJ8680UHeL-8nqs",
         },
         data: {
-            prompt: "T-Shirt Design with " + req.body.description + " with Transparent background",
+            prompt: "T-Shirt Design with " + req.body.description + " with black background",
         },
     }
     axios(config)
