@@ -37,7 +37,7 @@ h2 {
   color: rgb(250, 249, 246);
 }
 
-body { 
+.appBody { 
 	font-family: segoe-ui_normal,Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif;
 	display: grid;
 	grid-template-areas: 

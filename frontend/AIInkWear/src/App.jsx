@@ -3,28 +3,28 @@ import Aiink from '/AIINKLOGO.png'
 import './App.css'
 import Prompt from './components/Prompt'
 import BuyButton from './components/BuyButton'
-import Display from './components/Display'
-import ImageSplitter from './components/ImageSplitter'
+
 
 function App() {
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  return (
-    <>
-    <body>
+
+  return (  
+    <div className='appBody'>
     <header>
           <img src={Aiink} className="logo" alt="Aiink logo" />
     </header>
 
     <section>Prompt
-    <Prompt />
+    <Prompt selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
     </section>
 
     <aside>T-Shirt Area
-    <BuyButton />
+    <BuyButton selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
     </aside>
 
-    </body>
-    </>
+    </div>
+    
   )
 }
 
