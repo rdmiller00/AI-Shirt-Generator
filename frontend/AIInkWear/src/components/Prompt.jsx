@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-
-
 
 const Prompt = () => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState("");
+  const [splitImages, setSplitImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [loadingMessage, setLoadingMessage] = useState("");
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
-
 
   const handleGenerateImage = () => {
     const config = {
@@ -25,6 +24,8 @@ const Prompt = () => {
       .then(async function (response) {
         console.log(response.data);
         setGeneratedImage(response.data.uri);
+        setSplitImages([]); // Clear previous split images
+        setSelectedImage(null); // Reset selected image
         checkProgressAndFetchImage(response.data.messageId);
       })
       .catch(function (error) {
@@ -32,7 +33,8 @@ const Prompt = () => {
       });
   };
 
-        const checkProgressAndFetchImage = async (messageId) => {
+  const checkProgressAndFetchImage = async (messageId) => {
+    // messageId = '9853995d-0e0f-4e56-89d0-208fb110f9b0'
     const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
     if (picture.data.progress !== 100) {
       console.log("Loading image...");
@@ -42,8 +44,45 @@ const Prompt = () => {
     } else {
       console.log("Image loaded:", picture.data.uri);
       setGeneratedImage(picture.data.uri);
+      splitImage(picture.data.uri);
       setLoadingMessage("");
     }
+  };
+
+  const splitImage = (fetchedImageUri) => {
+    const image = new Image();
+    image.crossOrigin = "Anonymous";
+    image.src = fetchedImageUri;
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      const partWidth = image.width / 2;
+      const partHeight = image.height / 2;
+
+      canvas.width = partWidth;
+      canvas.height = partHeight;
+
+      for (let row = 0; row < 2; row++) {
+        for (let col = 0; col < 2; col++) {
+          const startX = col * partWidth;
+          const startY = row * partHeight;
+          context.clearRect(0, 0, partWidth, partHeight);
+          context.drawImage(image, startX, startY, partWidth, partHeight, 0, 0, partWidth, partHeight);
+          console.log(startX, startY, partWidth, partHeight);
+
+          const dataUrl = canvas.toDataURL("image/jpeg");
+          setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
+        }
+      }
+    };
+  };
+
+  const handleImageSelect = (index) => {
+    setSelectedImage(splitImages[index]);
+    console.log([...splitImages]);
+    console.log("Selected Image:", selectedImage);
   };
 
   return (
@@ -54,14 +93,28 @@ const Prompt = () => {
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
       />
-      <button className="generateButton" onClick={handleGenerateImage}>
-        Generate Image
-      </button>
+
+      {/* <button className="generateButton" onClick={checkProgressAndFetchImage}>Generate Image</button> */}
+      <button className="generateButton" onClick={handleGenerateImage}>Generate Image</button>
+        
+  
       <br />
       <h2>{loadingMessage}</h2>
       <br />
-      {generatedImage && <img src={generatedImage} alt="Generated Image" className="newImage" />}
+      {splitImages.map((image, index) => (
+        <img
+          key={index}
+          src={image.dataUrl}
+          alt={`Generated Image ${index + 1}`}
+          className={`newImage ${selectedImage === image.filename ? "selected" : ""}`}
+          onClick={() => handleImageSelect(index)}
+        />
+      ))}
+      
+      {selectedImage && <img src={selectedImage.dataUrl} alt="Selected Image" />}
+      
     </div>
   );
 };
+
 export default Prompt;
