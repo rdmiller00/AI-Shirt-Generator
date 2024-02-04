@@ -108,8 +108,7 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
 
       {/* <button className="generateButton" onClick={checkProgressAndFetchImage}>Generate Image</button> */}
       <button className="generateButton" onClick={handleGenerateImage}>Generate Image</button>
-        
-  
+      
       <br />
       <h2>{loadingMessage}</h2>
       <br />
