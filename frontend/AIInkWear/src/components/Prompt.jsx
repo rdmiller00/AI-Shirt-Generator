@@ -123,6 +123,7 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
   };
 
   return (
+
     <div className="promptContainer">
       {/* Split Images with Prompts */}
       {splitImages.map((image, index) => (

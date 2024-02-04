@@ -23,9 +23,9 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
       body: JSON.stringify({
         image_url: base64_image,
         item_code: "RNA1",
-        name: "My Image",
-        colours: "White,Black,Blue",
-        description: "Check out this awesome doodle tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and printed on demand.",
+        name: "Aiink Image",
+        colours: "Black, Athletic Grey, White",
+        description: "Check out this awesome Aiink Wear tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and printed on demand.",
         price: 18,
       }),
     };

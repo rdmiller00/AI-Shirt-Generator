@@ -23,7 +23,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
-  box-shadow: 2px 2px 5px #ff00ff;
+  box-shadow: 2px 2px 5px rgb(51, 167, 235); 
 }
 button:hover {
   border-color: #646cff;
