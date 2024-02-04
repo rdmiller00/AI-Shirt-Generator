@@ -22,7 +22,7 @@ app.post('/', (req, res) => {
         data: {
 
 
-            prompt: "T-Shirt Design with " + req.body.description + " with black background",
+            prompt: req.body.description
 
         },
     }
