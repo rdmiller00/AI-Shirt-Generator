@@ -1,12 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import catTshirt from "../images/cat-tshirt.jpg";
+import catRealism from "../images/cat-realism.jpg";
+import catFuturistic from "../images/cat-futuristic.jpg";
+import catDavinci from "../images/cat-davinci.jpg";
 
-const Prompt = ({selectedImage, setSelectedImage}) => {
+const initialPrompts = [
+  "T-shirt design Cat with sunglasses with a black background",
+  "Ultra-realistic cat, wearing round sunglasses",
+  "Cat wearing sunglasses, futuristic, high-quality",
+  "Cat wearing sunglasses, Leonardo Da Vinci's Mona Lisa",
+];
+
+const Prompt = ({ selectedImage, setSelectedImage }) => {
   const [prompt, setPrompt] = useState("");
   const [generatedImage, setGeneratedImage] = useState("");
-  const [splitImages, setSplitImages] = useState([]);
-  // const [selectedImage, setSelectedImage] = useState(null);
+  const [splitImages, setSplitImages] = useState([
+    { dataUrl: catTshirt, filename: "cat-tshirt.jpg" },
+    { dataUrl: catRealism, filename: "cat-realism.jpg" },
+    { dataUrl: catFuturistic, filename: "cat-futuristic.jpg" },
+    { dataUrl: catDavinci, filename: "cat-davinci.jpg" },
+  ]);
   const [loadingMessage, setLoadingMessage] = useState("");
+  const [showPrompts, setShowPrompts] = useState(true);
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -18,45 +34,41 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
     }
   }, [splitImages, setSelectedImage]);
 
-  const handleGenerateImage = () => {
-    const config = {
-      method: "post",
-      url: "http://localhost:3000/",
-      data: {
+  const handleGenerateImage = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/", {
         description: prompt,
-      },
-    };
-    axios(config)
-      .then(async function (response) {
-        console.log(response.data);
-        setGeneratedImage(response.data.uri);
-        setSplitImages([]); // Clear previous split images
-        setSelectedImage(null);
-        console.log(selectedImage) // Reset selected image
-        checkProgressAndFetchImage(response.data.messageId);
-
-      })
-      .catch(function (error) {
-        console.log(error);
       });
+
+      console.log(response.data);
+      setGeneratedImage(response.data.uri);
+      await checkProgressAndFetchImage(response.data.messageId);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const checkProgressAndFetchImage = async (messageId) => {
-    // messageId = '9853995d-0e0f-4e56-89d0-208fb110f9b0'
-    const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
-    if (picture.data.progress !== 100) {
-      console.log("Loading image...");
-      setLoadingMessage(`Like human art, generative AI art takes time too. Your design is about ${picture.data.progress || 0}% done`);
-      // if (picture.data.uri !== "undefined") {
-      // setGeneratedImage(picture.data.uri)  progress pics
-      // }
-      await sleep(5000);
-      checkProgressAndFetchImage(messageId);
-    } else {
-      console.log("Image loaded:", picture.data.uri);
-      setGeneratedImage(picture.data.uri);
-      splitImage(picture.data.uri);
-      setLoadingMessage("");
+    try {
+      const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
+      
+      if (picture.data.progress !== 100) {
+        console.log("Loading image...");
+        setLoadingMessage(
+          `Like human art, generative AI art takes time too. Your design is about ${picture.data.progress || 0}% done`
+        );
+        await sleep(5000);
+        await checkProgressAndFetchImage(messageId);
+      } else {
+        console.log("Image loaded:", picture.data.uri);
+        setGeneratedImage(picture.data.uri);
+        await splitImage(picture.data.uri);
+        setShowPrompts(false);
+        setLoadingMessage("");
+        setSplitImages([]);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -75,53 +87,77 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
       canvas.width = partWidth;
       canvas.height = partHeight;
 
+      const newImages = [];
+
       for (let row = 0; row < 2; row++) {
         for (let col = 0; col < 2; col++) {
           const startX = col * partWidth;
           const startY = row * partHeight;
           context.clearRect(0, 0, partWidth, partHeight);
-          context.drawImage(image, startX, startY, partWidth, partHeight, 0, 0, partWidth, partHeight);
-          console.log(startX, startY, partWidth, partHeight);
+          context.drawImage(
+            image,
+            startX,
+            startY,
+            partWidth,
+            partHeight,
+            0,
+            0,
+            partWidth,
+            partHeight
+          );
 
           const dataUrl = canvas.toDataURL("image/jpeg");
-          setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
-          
+          newImages.push({
+            dataUrl,
+            filename: `image${newImages.length}.jpg`,
+          });
         }
-      }};
+      }
+
+      setSplitImages((prevSplitImages) => [...prevSplitImages, ...newImages]);
+    };
   };
 
   const handleImageSelect = (index) => {
-    console.log(index);
     setSelectedImage(splitImages[index]);
-    console.log([...splitImages]);
-    console.log("Selected Image:", selectedImage);
   };
 
   return (
-    <div>
-      <input
-        className="promptInput"
-        placeholder="Enter prompt here! Have fun!"
-        value={prompt}
-        onChange={(e) => setPrompt(e.target.value)}
-      />
 
-      {/* <button className="generateButton" onClick={checkProgressAndFetchImage}>Generate Image</button> */}
-      <button className="generateButton" onClick={handleGenerateImage}>Generate Image</button>
-      
-      <br />
-      <h2>{loadingMessage}</h2>
-      <br />
+    <div className="promptContainer">
+      {/* Split Images with Prompts */}
       {splitImages.map((image, index) => (
-        <img
-          key={index}
-          src={image.dataUrl}
-          alt={`Generated Image ${index + 1}`}
-          className={`newImage ${selectedImage === image.filename ? "selected" : ""}`}
-          onClick={() => handleImageSelect(index)}
+        <div key={index} className="imageContainer">
+          {/* Prompt */}
+          {showPrompts && <p>Prompt: {initialPrompts[index]}</p>}
 
-        />
+          {/* Generated Image */}
+          <img
+            src={image.dataUrl}
+            alt={`Generated Image ${index + 1}`}
+            className={`newImage ${
+              selectedImage === image.filename ? "selected" : ""
+            }`}
+            onClick={() => handleImageSelect(index)}
+          />
+        </div>
       ))}
+
+      {/* Loading Message */}
+      <h2>{loadingMessage}</h2>
+
+      {/* Input Section */}
+      <div className="promptInputContainer">
+        <input
+          className="promptInput"
+          placeholder="Enter prompt here! Have fun!"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <button className="generateButton" onClick={handleGenerateImage}>
+          Generate Image
+        </button>
+      </div>
     </div>
   );
 };

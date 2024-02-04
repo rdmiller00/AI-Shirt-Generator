@@ -21,8 +21,7 @@ app.post('/', (req, res) => {
         },
         data: {
 
-
-            prompt: req.body.description,
+            prompt: req.body.description
 
         },
     }

@@ -53,16 +53,6 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
           )}
         </div>
         <div className="ShirtContainer">
-          <img src={greyShirt} className="Shirt" alt="Grey Shirt" />
-          {selectedImage && (
-            <img
-              src={selectedImage.dataUrl}
-              alt="Selected Image"
-              className="SelectedImage"
-            />
-          )}
-        </div>
-        <div className="ShirtContainer">
           <img src={whiteShirt} className="Shirt" alt="White Shirt" />
           {selectedImage && (
             <img
