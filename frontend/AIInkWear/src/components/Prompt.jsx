@@ -13,7 +13,6 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
   }
 
   useEffect(() => {
-    // This runs once when the component mounts
     if (splitImages.length > 0) {
       setSelectedImage(splitImages[0]);
     }
