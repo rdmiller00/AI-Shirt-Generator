@@ -30,7 +30,7 @@
 }
 
 .newImage {
-  max-width: 50%;
+  max-width: 20%;
 }
 
 h2 {
@@ -68,4 +68,34 @@ aside {
 
 header, section, aside {
 	padding: 5px;
+}
+
+.BuyContainer {
+  position: relative;
+}
+
+.Buy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ShirtContainer {
+  position: relative;
+}
+
+.Shirt {
+  width: 300px; /* Adjust the width as needed */
+  height: auto; /* Adjust the height as needed */
+}
+
+.SelectedImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(85%, 70%);
+  width: 110px; /* Adjust the width as needed */
+  height: auto; /* Adjust the height as needed */
+  z-index: 1;
 }
