@@ -12,6 +12,13 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
+  useEffect(() => {
+    // This runs once when the component mounts
+    if (splitImages.length > 0) {
+      setSelectedImage(splitImages[0]);
+    }
+  }, [splitImages, setSelectedImage]);
+
   const handleGenerateImage = () => {
     const config = {
       method: "post",
@@ -25,7 +32,8 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
         console.log(response.data);
         setGeneratedImage(response.data.uri);
         setSplitImages([]); // Clear previous split images
-        setSelectedImage(null); // Reset selected image
+        setSelectedImage(null);
+        console.log(selectedImage) // Reset selected image
         checkProgressAndFetchImage(response.data.messageId);
 
       })
@@ -48,9 +56,8 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
     } else {
       console.log("Image loaded:", picture.data.uri);
       setGeneratedImage(picture.data.uri);
-      await splitImage(picture.data.uri);
+      splitImage(picture.data.uri);
       setLoadingMessage("");
-      handleImageSelect(0);
     }
   };
 
@@ -78,12 +85,10 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
           console.log(startX, startY, partWidth, partHeight);
 
           const dataUrl = canvas.toDataURL("image/jpeg");
-          await setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
+          setSplitImages((prevSplitImages) => [...prevSplitImages, { dataUrl, filename: `image${prevSplitImages.length}.jpg` }]);
           
         }
-      }
-    };
-    handleImageSelect(0);
+      }};
   };
 
   const handleImageSelect = (index) => {
@@ -116,8 +121,9 @@ const Prompt = ({selectedImage, setSelectedImage}) => {
           alt={`Generated Image ${index + 1}`}
           className={`newImage ${selectedImage === image.filename ? "selected" : ""}`}
           onClick={() => handleImageSelect(index)}
+
         />
-      ))}   
+      ))}
     </div>
   );
 };
