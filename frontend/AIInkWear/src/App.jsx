@@ -15,11 +15,11 @@ function App() {
           <img src={Aiink} className="logo" alt="Aiink logo" />
     </header>
 
-    <section>Prompt
+    <section>
     <Prompt selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
     </section>
 
-    <aside>T-Shirt Area
+    <aside>
     <BuyButton selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
     </aside>
 
