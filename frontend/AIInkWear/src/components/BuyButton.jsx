@@ -26,7 +26,7 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
         name: "Aiink Image",
         colours: "Black, Athletic Grey, White",
         description: "Check out this awesome Aiink Wear tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and printed on demand.",
-        price: 18,
+        price: 16,
       }),
     };
 
@@ -54,6 +54,16 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
         </div>
         <div className="ShirtContainer">
           <img src={whiteShirt} className="Shirt" alt="White Shirt" />
+          {selectedImage && (
+            <img
+              src={selectedImage.dataUrl}
+              alt="Selected Image"
+              className="SelectedImage"
+            />
+          )}
+        </div>
+        <div className="ShirtContainer">
+          <img src={greyShirt} className="Shirt" alt="Grey Shirt" />
           {selectedImage && (
             <img
               src={selectedImage.dataUrl}

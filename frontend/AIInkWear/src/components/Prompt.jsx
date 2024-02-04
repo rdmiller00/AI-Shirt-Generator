@@ -125,6 +125,26 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
   return (
 
     <div className="promptContainer">
+
+<div className="loadingMessageContainer">
+      <h3>{loadingMessage}</h3>
+      </div>
+
+<div className="promptInputContainer">
+        <input
+          className="promptInput"
+          placeholder="Enter prompt here! Have fun!"
+          value={prompt}
+          onChange={(e) => setPrompt(e.target.value)}
+        />
+        <button className="generateButton" onClick={handleGenerateImage}>
+          Generate Image
+        </button>
+        
+      </div>
+
+      
+
       {/* Split Images with Prompts */}
       {splitImages.map((image, index) => (
         <div key={index} className="imageContainer">
@@ -144,20 +164,10 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
       ))}
 
       {/* Loading Message */}
-      <h2>{loadingMessage}</h2>
+      
 
       {/* Input Section */}
-      <div className="promptInputContainer">
-        <input
-          className="promptInput"
-          placeholder="Enter prompt here! Have fun!"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-        />
-        <button className="generateButton" onClick={handleGenerateImage}>
-          Generate Image
-        </button>
-      </div>
+      
     </div>
   );
 };
