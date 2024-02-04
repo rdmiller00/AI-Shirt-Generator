@@ -41,6 +41,7 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
   return (
     <div className='BuyContainer'>
       <div className="Buy">
+      <button id="buy_button" onClick={handleClick}>Buy Now!</button>
         <div className="ShirtContainer">
           <img src={blackShirt} className="Shirt" alt="Black Shirt" />
           {selectedImage && (
@@ -72,7 +73,6 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
           )}
         </div>
       </div>
-      <button id="buy_button" onClick={handleClick}>Buy Now!</button>
     </div>
   );
 };
