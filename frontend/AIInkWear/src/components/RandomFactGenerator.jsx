@@ -36,7 +36,8 @@ const RandomFactGenerator = () => {
     "The average person walks the equivalent of three times around the world in a lifetime.",
     "A group of flamingos is called a flamboyance.",
     "Ketchup was sold in the 1830s as medicine.",
-    "The Great Wall of China is not visible from space with the naked eye."
+    "The Great Wall of China is not visible from space with the naked eye.",
+    "This entire website was created by students at WE CAN CODE IT, a coding bootcamp"
   ];
   
 
@@ -44,7 +45,7 @@ const RandomFactGenerator = () => {
     const intervalId = setInterval(() => {
       const randomIndex = Math.floor(Math.random() * randomFacts.length);
       setRandomFact(randomFacts[randomIndex]);
-    }, 15000);
+    }, 10000);
 
     return () => clearInterval(intervalId);
   }, []);
