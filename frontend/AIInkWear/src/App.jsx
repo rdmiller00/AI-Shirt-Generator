@@ -8,12 +8,14 @@ import Prompt from './components/Prompt'
 import BuyButton from './components/BuyButton'
 
 
+
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
 
 
   return (  
     <div className='appBody'>
+      
       <header>
       <img src={Aiink} className="logo" alt="Aiink logo" />
       </header>
@@ -22,15 +24,15 @@ function App() {
     <img src={BobbyLogo} className="headShot" alt="Bobby logo" />
     <img src={MichaelLogo} className="headShot" alt="Michael logo" />
     </header2>
-
+    
     <section>
     <Prompt selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
+    <h3>&copy; AiiNKWEAR 2024</h3>
     </section>
 
     <aside>
     <BuyButton selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
     </aside>
-
     </div>
     
   )

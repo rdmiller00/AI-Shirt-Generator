@@ -4,6 +4,7 @@ import catTshirt from "../images/cat-tshirt.jpg";
 import catRealism from "../images/cat-realism.jpg";
 import catFuturistic from "../images/cat-futuristic.jpg";
 import catDavinci from "../images/cat-davinci.jpg";
+import RandomFactGenerator from "./RandomFactGenerator";
 
 const initialPrompts = [
   "T-shirt design Cat with sunglasses with a black background",
@@ -23,6 +24,7 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
   ]);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [showPrompts, setShowPrompts] = useState(true);
+  const [showRandomFact, setShowRandomFact] = useState(false); // Added state for showing random fact
 
   function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -57,6 +59,7 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
         setLoadingMessage(
           `Like human art, generative AI art takes time too. Your design is about ${picture.data.progress || 0}% done`
         );
+        setShowRandomFact(true); // Set showRandomFact to true when progress is !100%
         await sleep(5000);
         await checkProgressAndFetchImage(messageId);
       } else {
@@ -66,6 +69,7 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
         setShowPrompts(false);
         setLoadingMessage("");
         setSplitImages([]);
+        setShowRandomFact(false); // Set showRandomFact to false when progress is 100%
       }
     } catch (error) {
       console.log(error);
@@ -128,6 +132,11 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
 
 <div className="loadingMessageContainer">
       <h3>{loadingMessage}</h3>
+      <div className="randomFactContainer">
+            {/* Conditional rendering of RandomFactGenerator component */}
+            {showRandomFact && <RandomFactGenerator />}
+            {/* <RandomFactGenerator /> */}
+        </div>
       </div>
 
 <div className="promptInputContainer">
@@ -162,11 +171,6 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
           />
         </div>
       ))}
-
-      {/* Loading Message */}
-      
-
-      {/* Input Section */}
       
     </div>
   );
