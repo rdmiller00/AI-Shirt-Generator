@@ -186,12 +186,14 @@ aside {
   padding-top: 10%;
   align-items: center;
   justify-content: center;
-  top: 0; /* Position the overlay container at the top of the main container */
-  left: 0; /* Position the overlay container at the left of the main container */
-  width: 100%; /* Make the overlay container cover the entire width of the main container */
-  height: 100%; /* Make the overlay container cover the entire height of the main container */
+  top: 15%; /* Position the overlay container at the top of the main container */
+  left: 15%; /* Position the overlay container at the left of the main container */
+  width: 60%; /* Make the overlay container cover the entire width of the main container */
+  height: 60%; /* Make the overlay container cover the entire height of the main container */
   background-color: rgba(0, 0, 0, 0.918); /* Semi-transparent black background color */
   z-index: 999; /* Ensure the overlay container appears above the main container */
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px rgb(51, 167, 235);
 }
 
 
