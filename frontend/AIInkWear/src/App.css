@@ -183,11 +183,14 @@ aside {
   visibility: visible;
   position: absolute; 
   content-visibility:auto;
+  padding-top: 10%;
+  align-items: center;
+  justify-content: center;
   top: 0; /* Position the overlay container at the top of the main container */
   left: 0; /* Position the overlay container at the left of the main container */
   width: 100%; /* Make the overlay container cover the entire width of the main container */
   height: 100%; /* Make the overlay container cover the entire height of the main container */
-  background-color: rgba(180, 23, 23, 0.5); /* Semi-transparent black background color */
+  background-color: rgba(0, 0, 0, 0.918); /* Semi-transparent black background color */
   z-index: 999; /* Ensure the overlay container appears above the main container */
 }
 
