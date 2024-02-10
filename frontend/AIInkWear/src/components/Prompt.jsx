@@ -131,9 +131,9 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
     <div className="promptContainer">
 
 <div className="loadingMessageContainer">
-      <h3>{loadingMessage}</h3>
-      <div className="randomFactContainer">
+      <div className="randomFactContainer" style={{ visibility: showRandomFact? "visible" : "hidden" }}>
             {/* Conditional rendering of RandomFactGenerator component */}
+            <h3>{loadingMessage}</h3>
             {showRandomFact && <RandomFactGenerator />}
             {/* <RandomFactGenerator /> */}
         </div>
