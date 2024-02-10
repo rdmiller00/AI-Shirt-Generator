@@ -69,7 +69,9 @@ header2 .headShot:hover{
 
 header2 .headShot {
   border-radius: 75px;
+  height: 100%;
 }
+
 
 header2 {
   padding-left: 70%;

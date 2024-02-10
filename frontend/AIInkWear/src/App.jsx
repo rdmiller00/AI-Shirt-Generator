@@ -20,14 +20,20 @@ function App() {
       <img src={Aiink} className="logo" alt="Aiink logo" />
       </header>
     <header2>
+    <a href="https://www.linkedin.com/in/eric-bonstein-866a578b/" target="_blank" rel="noopener noreferrer">
     <img src={ChadLogo} className="headShot" alt="Chad logo" />
+    </a>
+    <a href="https://www.linkedin.com/in/robert-bobby-miller-pmp-2a2539266/" target="_blank" rel="noopener noreferrer">
     <img src={BobbyLogo} className="headShot" alt="Bobby logo" />
+    </a>
+    <a href="https://www.linkedin.com/in/michael-carrico-b43889b9/" target="_blank" rel="noopener noreferrer">
     <img src={MichaelLogo} className="headShot" alt="Michael logo" />
+    </a>
     </header2>
     
     <section>
     <Prompt selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
-    <h3>&copy; AiiNKWEAR 2024</h3>
+    <h3>&copy; AiiNKWARE 2024</h3>
     </section>
 
     <aside>
