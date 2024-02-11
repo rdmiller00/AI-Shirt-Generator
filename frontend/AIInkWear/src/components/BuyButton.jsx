@@ -25,17 +25,23 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
         item_code: "RNA1",
         name: "Aiink Image",
         colours: "Black, Athletic Grey, White",
-        description: "Check out this awesome Aiink Wear tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and printed on demand.",
-        price: 16,
+        description: "Check out this awesome Aiink Ware tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and AiiNKWARE.com.",
+        price: 17,
       }),
     };
 
+      // Open a new tab, ready to receive the product URL. 
+  var newTab = window.open('about:blank', '_blank');
+  newTab.document.write(
+    "<body style='background-color:#faf9f9;width:100%;height:100%;margin:0;position:relative;'><img src='https://storage.googleapis.com/teemill-dev-image-bucket/doodle2tee_loader.gif' style='position:absolute;top:calc(50% - 100px);left:calc(50% - 100px);'/></body>"
+  );
+
     // Send the API request, and redirect the new tab to the URL that is returned
-    fetch('https://teemill.com/omnis/v3/product/create', options)
-      .then(response => response.json())
-      .then(response => window.open(response.url, '_blank'))
-      .catch(err => console.error(err));
-  };
+  fetch('https://teemill.com/omnis/v3/product/create', options)
+  .then(response => response.json())
+  .then(response => newTab.location.href = response.url)
+  .catch(err => console.error(err));
+};
 
   
   return (
