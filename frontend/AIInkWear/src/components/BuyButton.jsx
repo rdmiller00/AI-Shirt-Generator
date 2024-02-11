@@ -31,9 +31,12 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
     };
 
       // Open a new tab, ready to receive the product URL. 
-  var newTab = window.open('about:blank', '_blank');
-  newTab.document.write(
-    "<body style='background-color:#faf9f9;width:100%;height:100%;margin:0;position:relative;'><img src='https://storage.googleapis.com/teemill-dev-image-bucket/doodle2tee_loader.gif' style='position:absolute;top:calc(50% - 100px);left:calc(50% - 100px);'/></body>"
+  var newTab = window.open("AiiNKWARE Checkout", '_blank');
+  setTimeout(function() {
+    newTab.document.title = "AiiNKWARE Checkout";}, 50);
+    newTab.document.write(
+    // "<body style='background-color:#faf9f9;width:100%;height:100%;margin:0;position:relative;'><img src='https://storage.googleapis.com/teemill-dev-image-bucket/doodle2tee_loader.gif' style='position:absolute;top:calc(50% - 100px);left:calc(50% - 100px);'/></body>"
+    "<body style='background-color:#faf9f9;width:100%;height:100%;margin:0;position:relative;'><img src='https://storage.googleapis.com/teemill-dev-image-bucket/doodle2tee_loader.gif' style='position:absolute;top:calc(50% - 100px);left:calc(50% - 100px);'/><div style='position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); text-align: center; font-size: 40px;'>Get Ready! This is going to be AWESOME!</div></body>"
   );
 
     // Send the API request, and redirect the new tab to the URL that is returned

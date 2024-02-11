@@ -27,7 +27,7 @@ app.post('/', (req, res) => {
         },
         data: {
 
-            prompt: req.body.description + " with a white background"
+            prompt: req.body.description + " , plain white background"
 
         },
     }
