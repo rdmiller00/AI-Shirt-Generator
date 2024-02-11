@@ -1,10 +1,16 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-
+const fs = require('fs');
+const uuid = require('uuid');
+const spawn = require("child_process").spawn;
+const fileUpload = require('express-fileupload');
 const app = express();
 const port = 3000;
 
+
+// default options
+app.use(fileUpload());
 app.use(cors());
 app.use(express.json());
 
@@ -21,7 +27,7 @@ app.post('/', (req, res) => {
         },
         data: {
 
-            prompt: req.body.description
+            prompt: req.body.description + " with a white background"
 
         },
     }
@@ -52,6 +58,45 @@ app.get('/message/:messageId', (req, res) => {
     });
 });
 
+app.post("/process", async (req, res) => {
+    if(!req.files.image){
+        res.status(400).json({
+            msg: "Please input Image"
+        })
+    }
+    const image = req.files.image
+    const tmpdir = 'tmp/'
+    const filename = uuid.v4()
+    
+    // Download Image From Internet
+    fs.writeFile(`${tmpdir}${filename}.png`, image.data, (err) => {
+        if (err) {
+          res.status(400).json({
+            msg: "image could not be downloaded."
+          })  
+        }
+    });
+
+    // Run REMBG Against Temp Image and Output IMAGENAME_CLEANED.PNG
+    const rembg = spawn('rembg',["i", `${tmpdir}${filename}.png`, `${tmpdir}${filename}_cleaned.png`]);
+    rembg.on('exit', function (code, signal) {
+        if(code == 0){
+          data = fs.readFileSync(`${tmpdir}${filename}_cleaned.png`, 'base64');
+          res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': data.length
+          });
+          res.end(data);
+        }
+        else{
+            res.status(400).json({
+                msg: "image could not be processed."
+            })
+        }
+        console.log('child process exited with ' +
+                    `code ${code} and signal ${signal}`);
+      });
+})
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

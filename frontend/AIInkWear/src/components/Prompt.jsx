@@ -52,6 +52,7 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
 
   const checkProgressAndFetchImage = async (messageId) => {
     try {
+      // let messageId = "857a6ea2-9857-471e-8df0-6a788b2ea02c";
       const picture = await axios.get(`http://localhost:3000/message/${messageId}`);
       
       if (picture.data.progress !== 100) {
@@ -75,16 +76,25 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
       console.log(error);
     }
   };
-
+  
   const splitImage = async (fetchedImageUri) => {
     const image = new Image();
     image.crossOrigin = "Anonymous";
     image.src = fetchedImageUri;
 
+    const downloadedImage = await axios.get(fetchedImageUri, {responseType: 'arraybuffer'});
+    const formData = new FormData();
+    formData.append("image", new Blob([downloadedImage.data]), "image.png");
+    const cleanImage = await axios.post("http://localhost:3000/process", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    })
+    image.src = `data:image/png;base64,${cleanImage.data}`;
+
     image.onload = async () => {
       const canvas = document.createElement("canvas");
       const context = canvas.getContext("2d");
-
       const partWidth = image.width / 2;
       const partHeight = image.height / 2;
 
@@ -110,10 +120,10 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
             partHeight
           );
 
-          const dataUrl = canvas.toDataURL("image/jpeg");
+          const dataUrl = canvas.toDataURL("image/png");
           newImages.push({
             dataUrl,
-            filename: `image${newImages.length}.jpg`,
+            filename: `image${newImages.length}.png`,
           });
         }
       }
