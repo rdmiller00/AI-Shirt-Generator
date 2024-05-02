@@ -26,7 +26,7 @@ const BuyButton = ({selectedImage, setSelectedImage}) => {
         name: "Aiink Image",
         colours: "Black, Athletic Grey, White",
         description: "Check out this awesome Aiink Ware tee, printed on an organic cotton t-shirt sustainably, using renewable energy. Created via the Teemill API and AiiNKWARE.com.",
-        price: 17,
+        price: 20,
       }),
     };
 

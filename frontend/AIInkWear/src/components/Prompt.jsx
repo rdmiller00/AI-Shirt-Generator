@@ -82,15 +82,16 @@ const Prompt = ({ selectedImage, setSelectedImage }) => {
     image.crossOrigin = "Anonymous";
     image.src = fetchedImageUri;
 
-    const downloadedImage = await axios.get(fetchedImageUri, {responseType: 'arraybuffer'});
-    const formData = new FormData();
-    formData.append("image", new Blob([downloadedImage.data]), "image.png");
-    const cleanImage = await axios.post("http://localhost:3000/process", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      }
-    })
-    image.src = `data:image/png;base64,${cleanImage.data}`;
+    // const downloadedImage = await axios.get(fetchedImageUri, {responseType: 'arraybuffer'});
+    // const formData = new FormData();
+    // formData.append("image", new Blob([downloadedImage.data]), "image.png");
+    // const cleanImage = await axios.post("http://localhost:3000/process", formData, {
+    //   headers: {
+    //     "Content-Type": "multipart/form-data",
+    //   }
+    // })
+    // image.src = `data:image/png;base64,${cleanImage.data}`;
+    
 
     image.onload = async () => {
       const canvas = document.createElement("canvas");

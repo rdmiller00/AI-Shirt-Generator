@@ -6,7 +6,7 @@ import MichaelLogo from './images/MICHAELLogo.png'
 import './App.css'
 import Prompt from './components/Prompt'
 import BuyButton from './components/BuyButton'
-
+import Navbar from './components/NavBar'
 
 
 function App() {
@@ -15,7 +15,6 @@ function App() {
 
   return (  
     <div className='appBody'>
-      
       <header>
       <img src={Aiink} className="logo" alt="Aiink logo" />
       </header>
@@ -39,6 +38,7 @@ function App() {
     <aside>
     <BuyButton selectedImage={selectedImage} setSelectedImage={setSelectedImage}/>
     </aside>
+    <Navbar />
     </div>
     
   )

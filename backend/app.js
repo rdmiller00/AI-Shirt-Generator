@@ -27,7 +27,7 @@ app.post('/', (req, res) => {
         },
         data: {
 
-            prompt: req.body.description + " , plain white background"
+            prompt: req.body.description
 
         },
     }
@@ -77,25 +77,25 @@ app.post("/process", async (req, res) => {
         }
     });
 
-    // Run REMBG Against Temp Image and Output IMAGENAME_CLEANED.PNG
-    const rembg = spawn('rembg',["i", `${tmpdir}${filename}.png`, `${tmpdir}${filename}_cleaned.png`]);
-    rembg.on('exit', function (code, signal) {
-        if(code == 0){
-          data = fs.readFileSync(`${tmpdir}${filename}_cleaned.png`, 'base64');
-          res.writeHead(200, {
-            'Content-Type': 'image/png',
-            'Content-Length': data.length
-          });
-          res.end(data);
-        }
-        else{
-            res.status(400).json({
-                msg: "image could not be processed."
-            })
-        }
-        console.log('child process exited with ' +
-                    `code ${code} and signal ${signal}`);
-      });
+    // // Run REMBG Against Temp Image and Output IMAGENAME_CLEANED.PNG
+    // const rembg = spawn('rembg',["i", `${tmpdir}${filename}.png`, `${tmpdir}${filename}_cleaned.png`]);
+    // rembg.on('exit', function (code, signal) {
+    //     if(code == 0){
+    //       data = fs.readFileSync(`${tmpdir}${filename}_cleaned.png`, 'base64');
+    //       res.writeHead(200, {
+    //         'Content-Type': 'image/png',
+    //         'Content-Length': data.length
+    //       });
+    //       res.end(data);
+    //     }
+    //     else{
+    //         res.status(400).json({
+    //             msg: "image could not be processed."
+    //         })
+    //     }
+    //     console.log('child process exited with ' +
+    //                 `code ${code} and signal ${signal}`);
+    //   });
 })
 
 app.listen(port, () => {
